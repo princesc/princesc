@@ -1,0 +1,9 @@
+local correctKey = "yasirgateng"
+local userInput = tostring(input("Masukkan key: "))
+
+if userInput == correctKey then
+    print("Key benar! Mengambil dan menjalankan script...")
+    loadstring(game:HttpGet("https://pastebin.com/raw/JBi4ehDn"))()
+else
+    warn("Key salah! Akses ditolak.")
+end
