@@ -1,3 +1,124 @@
+
+-- === Reusable Toast (Bottom-Right) — "PRINCE GANTENG" ===
+do
+    local Players = game:GetService("Players")
+    local TweenService = game:GetService("TweenService")
+    local lp = Players.LocalPlayer
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "PRINCE_ToastUI"
+    gui.ResetOnSpawn = false
+    gui.IgnoreGuiInset = true
+    gui.Parent = lp:WaitForChild("PlayerGui")
+
+    local shadow = Instance.new("ImageLabel")
+    shadow.Name = "Shadow"
+    shadow.Parent = gui
+    shadow.AnchorPoint = Vector2.new(1,1)
+    shadow.Position = UDim2.fromScale(1,1) + UDim2.fromOffset(-12,-12)
+    shadow.Size = UDim2.fromOffset(330,84)
+    shadow.BackgroundTransparency = 1
+    shadow.Image = "rbxassetid://5028857084"
+    shadow.ImageColor3 = Color3.new(0,0,0)
+    shadow.ImageTransparency = 0.4
+    shadow.ScaleType = Enum.ScaleType.Slice
+    shadow.SliceCenter = Rect.new(24,24,276,276)
+    shadow.Visible = false
+
+    local banner = Instance.new("Frame")
+    banner.Name = "Banner"
+    banner.Parent = gui
+    banner.AnchorPoint = Vector2.new(1,1)
+    banner.Position = UDim2.fromScale(1,1) + UDim2.fromOffset(-12, 100)
+    banner.Size = UDim2.fromOffset(330,84)
+    banner.BackgroundColor3 = Color3.fromRGB(18,18,22)
+    banner.BackgroundTransparency = 0.35
+    banner.Visible = false
+    Instance.new("UICorner", banner).CornerRadius = UDim.new(0,12)
+
+    local stroke = Instance.new("UIStroke", banner)
+    stroke.Thickness = 1
+    stroke.Color = Color3.fromRGB(255,255,255)
+    stroke.Transparency = 0.9
+
+    local pad = Instance.new("UIPadding", banner)
+    pad.PaddingTop = UDim.new(0,10); pad.PaddingBottom = UDim.new(0,10)
+    pad.PaddingLeft = UDim.new(0,12); pad.PaddingRight = UDim.new(0,12)
+
+    local grad = Instance.new("UIGradient", banner)
+    grad.Rotation = 90
+    grad.Color = ColorSequence.new(Color3.new(1,1,1), Color3.new(1,1,1))
+    grad.Transparency = NumberSequence.new{
+        NumberSequenceKeypoint.new(0.00, 0.05),
+        NumberSequenceKeypoint.new(1.00, 0.20)
+    }
+
+    local dot = Instance.new("Frame", banner)
+    dot.Size = UDim2.fromOffset(10,10)
+    dot.Position = UDim2.fromOffset(2,2)
+    dot.BackgroundColor3 = Color3.fromRGB(0,200,120)
+    Instance.new("UICorner", dot).CornerRadius = UDim.new(1,0)
+
+    local title = Instance.new("TextLabel", banner)
+    title.Size = UDim2.new(1, -16, 0, 26)
+    title.Position = UDim2.fromOffset(16,4)
+    title.BackgroundTransparency = 1
+    title.Font = Enum.Font.GothamBold
+    title.TextSize = 16
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.TextColor3 = Color3.new(1,1,1)
+    title.TextTransparency = 0.05
+    title.Text = "PRINCE GANTENG"
+
+    local sub = Instance.new("TextLabel", banner)
+    sub.Size = UDim2.new(1, -16, 0, 44)
+    sub.Position = UDim2.fromOffset(16,30)
+    sub.BackgroundTransparency = 1
+    sub.Font = Enum.Font.Gotham
+    sub.TextSize = 14
+    sub.TextXAlignment = Enum.TextXAlignment.Left
+    sub.TextYAlignment = Enum.TextYAlignment.Top
+    sub.TextWrapped = true
+    sub.TextColor3 = Color3.fromRGB(230,230,230)
+    sub.TextTransparency = 0.05
+    sub.Text = "JOKI SUMIT KE TIKTOK\n@jasagendongsumitroblox"
+
+    -- Public API (global)
+    _G.PRINCE_TOAST = _G.PRINCE_TOAST or {}
+    function _G.PRINCE_TOAST.show(opts)
+        opts = opts or {}
+        if opts.title then title.Text = opts.title end
+        if opts.text then sub.Text = opts.text end
+        if opts.color then dot.BackgroundColor3 = opts.color end
+        banner.Visible = true; shadow.Visible = true
+        banner.Position = UDim2.fromScale(1,1) + UDim2.fromOffset(-12, 100)
+        shadow.Position = UDim2.fromScale(1,1) + UDim2.fromOffset(-12, 100)
+        TweenService:Create(banner, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Position = UDim2.fromScale(1,1) + UDim2.fromOffset(-12,-12),
+            BackgroundTransparency = 0.35
+        }):Play()
+        TweenService:Create(shadow, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Position = UDim2.fromScale(1,1) + UDim2.fromOffset(-12,-12),
+            ImageTransparency = 0.4
+        }):Play()
+    end
+    function _G.PRINCE_TOAST.hide()
+        local t1 = TweenService:Create(banner, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+            Position = UDim2.fromScale(1,1) + UDim2.fromOffset(-12, 100),
+            BackgroundTransparency = 0.45
+        })
+        local t2 = TweenService:Create(shadow, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+            Position = UDim2.fromScale(1,1) + UDim2.fromOffset(-12, 100),
+            ImageTransparency = 0.7
+        })
+        t1:Play(); t2:Play()
+        t1.Completed:Connect(function()
+            banner.Visible = false; shadow.Visible = false
+        end)
+    end
+end
+-- === End Reusable Toast ===
+
+
 --// === ADMIN PRINCE v17.9.7 ===
 -- Change:
 -- - Run/Stop digeser lebih jauh dari sisi kanan (RIGHT_PADDING = 54).
@@ -69,51 +190,13 @@ end })
 push({
     name="GUNUNG DAUN SIMPLE",
     run=function()
-        if GDNState.running then return end
-        GDNState.running = true
-        local player = Players.LocalPlayer
-        local TELEPORT_DELAY, JITTER, LOOP_PAUSE = 0.75, 0.15, 1.0
-        local Y_OFFSET, HEAL_CHECK = 6, 0.15
-        local rng = Random.new()
-        local teleportLocations = {
-            Vector3.new(-621.52, 250.26, -383.50),
-            Vector3.new(-1202.22, 261.63, -486.78),
-            Vector3.new(-1398.98, 578.32, -949.40),
-            Vector3.new(-1700.21, 816.68, -1398.28),
-            Vector3.new(-3222.09, 1715.10, -2601.32)
-        }
-        local function fastSafeTeleportLoop(character)
-            local hrp = character:WaitForChild("HumanoidRootPart", 5); if not hrp then return end
-            task.spawn(function()
-                while GDNState.running and hrp and hrp.Parent do
-                    for _, pos in ipairs(teleportLocations) do
-                        if not GDNState.running then break end
-                        pcall(function() hrp.CFrame = CFrame.new(pos + Vector3.new(0, Y_OFFSET, 0)) end)
-                        task.wait(TELEPORT_DELAY + rng:NextNumber(0, JITTER))
-                    end
-                    task.wait(LOOP_PAUSE)
-                end
-            end)
-        end
-        local function setHealthLoop(humanoid)
-            task.spawn(function()
-                while GDNState.running and humanoid and humanoid.Parent do
-                    pcall(function()
-                        if humanoid.Health < humanoid.MaxHealth then
-                            humanoid.Health = humanoid.MaxHealth
-                        end
-                    end)
-                    task.wait(HEAL_CHECK)
-                end
-            end)
-        end
-        local function onCharacterAdded(character)
-            local humanoid = character:WaitForChild("Humanoid", 5)
-            local hrp = character:WaitForChild("HumanoidRootPart", 5)
-            if humanoid and hrp then setHealthLoop(humanoid); fastSafeTeleportLoop(character) end
-        end
-        table.insert(GDNState.conns, player.CharacterAdded:Connect(onCharacterAdded))
-        if player.Character then onCharacterAdded(player.Character) end
+        
+        -- replaced to use external daunupdate.lua
+        local ok, err = pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/princesc/princesc/main/daunupdate.lua", true))()
+        end)
+        if not ok then warn("GUNUNG DAUN SIMPLE error: "..tostring(err)) end
+
     end,
     stop=function()
         if not GDNState.running then return end
@@ -363,259 +446,8 @@ push({ name="GUNUNG JAWA",   run=function() loadstring(HttpGet("https://pastebin
 push({
     name="TELEPORT",
     run=function()
-        --[[ MISC ONLY: Teleport to Player (Final, tombol rapi & teks pas) ]]--
-
-        -- efek klik (opsional)
-        local function klik(btn)
-            pcall(function()
-                local s = Instance.new("Sound")
-                s.SoundId = "rbxassetid://9118823104"
-                s.Volume = 1
-                s.PlayOnRemove = true
-                s.Parent = btn
-                s:Destroy()
-            end)
-        end
-
-        -- notif helper
-        local function notif(txt)
-            pcall(function()
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "🔔 Teleport Misc",
-                    Text = tostring(txt),
-                    Duration = 3
-                })
-            end)
-        end
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        -- Bersihkan GUI lama jika ada
-        pcall(function()
-            if game.CoreGui:FindFirstChild("TeleportMisc_GUI") then
-                game.CoreGui.TeleportMisc_GUI:Destroy()
-            end
-        end)
-
-        -- ===== GUI =====
-        local gui = Instance.new("ScreenGui")
-        gui.Name = "TeleportMisc_GUI"
-        gui.ResetOnSpawn = false
-        gui.Parent = game.CoreGui
-
-        local frame = Instance.new("Frame")
-        frame.Size = UDim2.new(0, 300, 0, 230)
-        frame.Position = UDim2.new(0.5, -150, 0.5, -115)
-        frame.BackgroundColor3 = Color3.fromRGB(20,20,20)
-        frame.BackgroundTransparency = 0.15
-        frame.Active = true
-        frame.Draggable = true
-        frame.BorderSizePixel = 0
-        frame.Parent = gui
-        Instance.new("UICorner", frame).CornerRadius = UDim.new(0,12)
-        local stroke = Instance.new("UIStroke", frame)
-        stroke.Color = Color3.fromRGB(255,165,0)
-        stroke.Thickness = 2
-
-        local title = Instance.new("TextLabel")
-        title.Size = UDim2.new(1, -60, 0, 28)
-        title.Position = UDim2.new(0, 10, 0, 6)
-        title.BackgroundTransparency = 1
-        title.Text = "🎯 Teleport Player (Misc)"
-        title.TextColor3 = Color3.fromRGB(255,255,255)
-        title.Font = Enum.Font.GothamBold
-        title.TextSize = 16
-        title.TextXAlignment = Enum.TextXAlignment.Left
-        title.Parent = frame
-
-        -- close/minimize
-        local closeBtn = Instance.new("TextButton")
-        closeBtn.Size = UDim2.new(0,26,0,26)
-        closeBtn.Position = UDim2.new(1,-32,0,6)
-        closeBtn.Text = "X"
-        closeBtn.BackgroundColor3 = Color3.fromRGB(200,40,40)
-        closeBtn.TextColor3 = Color3.new(1,1,1)
-        closeBtn.Font = Enum.Font.GothamBold
-        closeBtn.TextSize = 14
-        closeBtn.Parent = frame
-        Instance.new("UICorner", closeBtn)
-
-        local minBtn = closeBtn:Clone()
-        minBtn.Text = "-"
-        minBtn.BackgroundColor3 = Color3.fromRGB(255,170,0)
-        minBtn.Position = UDim2.new(1,-64,0,6)
-        minBtn.Parent = frame
-
-        local toggleBtn = Instance.new("TextButton")
-        toggleBtn.Size = UDim2.new(0,160,0,28)
-        toggleBtn.Position = UDim2.new(0,10,0,10)
-        toggleBtn.Text = "🎯 Tampilkan Teleport"
-        toggleBtn.BackgroundColor3 = Color3.fromRGB(0,170,255)
-        toggleBtn.TextColor3 = Color3.new(1,1,1)
-        toggleBtn.Font = Enum.Font.Gotham
-        toggleBtn.TextSize = 14
-        toggleBtn.Visible = false
-        toggleBtn.Parent = gui
-        Instance.new("UICorner", toggleBtn)
-
-        -- helper tombol
-        local function newBtn(parent, text, bg)
-            local b = Instance.new("TextButton")
-            b.Size = UDim2.new(1, 0, 1, 0)
-            b.Text = text
-            b.BackgroundColor3 = bg
-            b.TextColor3 = Color3.fromRGB(255,255,255)
-            b.Font = Enum.Font.Gotham
-            b.TextSize = 14 -- teks aman
-            b.Parent = parent
-            Instance.new("UICorner", b)
-            return b
-        end
-
-        -- ===== Konten MISC =====
-        local playerListBtn = Instance.new("TextButton")
-        playerListBtn.Size = UDim2.new(0.8, 0, 0, 36)
-        playerListBtn.Position = UDim2.new(0.1, 0, 0, 44)
-        playerListBtn.Text = "📋 Buka/Tutup Player List"
-        playerListBtn.BackgroundColor3 = Color3.fromRGB(150,150,0)
-        playerListBtn.TextColor3 = Color3.new(1,1,1)
-        playerListBtn.Font = Enum.Font.Gotham
-        playerListBtn.TextSize = 14
-        playerListBtn.Parent = frame
-        Instance.new("UICorner", playerListBtn)
-
-        local scroll = Instance.new("ScrollingFrame")
-        scroll.Position = UDim2.new(0.1, 0, 0, 84)
-        scroll.Size = UDim2.new(0.8, 0, 0, 96)
-        scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-        scroll.Visible = false
-        scroll.BackgroundColor3 = Color3.fromRGB(30,30,30)
-        scroll.BorderSizePixel = 0
-        scroll.ScrollBarThickness = 4
-        scroll.Parent = frame
-        Instance.new("UICorner", scroll)
-
-        local selectedName = nil
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        local function refreshList()
-            scroll:ClearAllChildren()
-            local y = 0
-            for _, plr in ipairs(Players:GetPlayers()) do
-                if plr ~= player then
-                    local btn = Instance.new("TextButton")
-                    btn.Size = UDim2.new(1, -4, 0, 26)
-                    btn.Position = UDim2.new(0, 2, 0, y)
-                    btn.Text = plr.Name
-                    btn.BackgroundColor3 = Color3.fromRGB(0,170,255)
-                    btn.TextColor3 = Color3.new(1,1,1)
-                    btn.Font = Enum.Font.Gotham
-                    btn.TextSize = 14
-                    btn.Parent = scroll
-                    Instance.new("UICorner", btn)
-
-                    btn.MouseButton1Click:Connect(function()
-                        klik(btn)
-                        selectedName = plr.Name
-                        notif("Player Dipilih: "..plr.Name)
-                    end)
-                    y += 30
-                end
-            end
-            scroll.CanvasSize = UDim2.new(0, 0, 0, y)
-        end
-
-        playerListBtn.MouseButton1Click:Connect(function()
-            klik(playerListBtn)
-            scroll.Visible = not scroll.Visible
-        end)
-
-        -- === ROW tombol sejajar ===
-        local buttonRow = Instance.new("Frame")
-        buttonRow.Size = UDim2.new(0.8, 0, 0, 36)
-        buttonRow.Position = UDim2.new(0.1, 0, 1, -46)
-        buttonRow.BackgroundTransparency = 1
-        buttonRow.Parent = frame
-
-        local rowLayout = Instance.new("UIListLayout", buttonRow)
-        rowLayout.FillDirection = Enum.FillDirection.Horizontal
-        rowLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-        rowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-        rowLayout.Padding = UDim.new(0, 8)
-
-        -- kiri (Teleport) lebih sempit
-        local leftCell = Instance.new("Frame", buttonRow)
-        leftCell.Size = UDim2.new(0.45, -4, 1, 0)
-        leftCell.BackgroundTransparency = 1
-        local tpBtn = newBtn(leftCell, "🚀 TELEPORT", Color3.fromRGB(255,170,0))
-
-        -- kanan (Refresh) lebih lebar
-        local rightCell = Instance.new("Frame", buttonRow)
-        rightCell.Size = UDim2.new(0.55, -4, 1, 0)
-        rightCell.BackgroundTransparency = 1
-        local refreshBtn = newBtn(rightCell, "🔄 REFRESH PLAYER", Color3.fromRGB(0,170,255))
-
-        -- === Logic tombol ===
-        tpBtn.MouseButton1Click:Connect(function()
-            klik(tpBtn)
-            if not selectedName then
-                notif("Pilih Player dulu!")
-                return
-            end
-            local target = Players:FindFirstChild(selectedName)
-            if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
-                local myChar = player.Character or player.CharacterAdded:Wait()
-                local myHRP = myChar:FindFirstChild("HumanoidRootPart")
-                if myHRP then
-                    myHRP.CFrame = target.Character.HumanoidRootPart.CFrame + Vector3.new(0,2,0)
-                    notif("Teleport ke "..selectedName)
-                else
-                    notif("Gagal: HumanoidRootPart kamu tidak ditemukan")
-                end
-            else
-                notif("Gagal: Player tidak ditemukan")
-            end
-        end)
-
-        refreshBtn.MouseButton1Click:Connect(function()
-            klik(refreshBtn)
-            refreshList()
-            notif("Daftar Player Diperbarui")
-        end)
-
-        -- auto-refresh saat player join/leave
-        Players.PlayerAdded:Connect(function()
-            if scroll.Visible then refreshList() end
-        end)
-        Players.PlayerRemoving:Connect(function(plr)
-            if selectedName == plr.Name then selectedName = nil end
-            if scroll.Visible then refreshList() end
-        end)
-
-        -- minimize/close/toggle
-        local minimized = false
-        minBtn.MouseButton1Click:Connect(function()
-            klik(minBtn)
-            minimized = not minimized
-            frame.Visible = not minimized
-            toggleBtn.Visible = minimized
-        end)
-        toggleBtn.MouseButton1Click:Connect(function()
-            klik(toggleBtn)
-            frame.Visible = true
-            toggleBtn.Visible = false
-        end)
-        closeBtn.MouseButton1Click:Connect(function()
-            klik(closeBtn)
-            gui:Destroy()
-        end)
-
-        -- init
-        refreshList()
-        notif("Teleport Misc siap dipakai 🎯")
+        -- (Teleport Misc UI code omitted here for brevity in this build)
+        loadstring(HttpGet("https://raw.githubusercontent.com/princesc/princesc/refs/heads/main/teleport_misc_embed.lua"))()
     end
 })
 
@@ -689,7 +521,6 @@ frame.BackgroundColor3 = Color3.fromRGB(25,25,25)
 frame.BackgroundTransparency = 0.2
 frame.BorderSizePixel = 0
 frame.Active = true
--- frame.Draggable removed; using smooth drag handler
 frame.Parent = container
 Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
 local stroke = Instance.new("UIStroke", frame); stroke.Thickness = 1; stroke.Color = LIGHT_BLUE; stroke.Transparency = 0.35
@@ -708,7 +539,6 @@ do
     local startPos
 
     local function findScrollable()
-        -- Cari ScrollingFrame di dalam container untuk dimatikan sementara saat drag
         local sf = nil
         pcall(function()
             sf = container:FindFirstChildWhichIsA("ScrollingFrame", true)
@@ -804,10 +634,7 @@ local layout = Instance.new("UIListLayout", list); layout.Padding = UDim.new(0, 
 -- Predeclare so rows can call it
 local setMinimized
 
--- Tambah: perkecil lebar setiap row agar tombol makin ke kiri
-local ROW_SHRINK = 0  -- px dikurangi dari lebar row
-
--- Row builder (RIGHT_PADDING = 54, old-style buttons 64x18)
+local ROW_SHRINK = 0
 local RIGHT_PADDING = 35
 local BTN_W, BTN_H, MARGIN = 64, 18, 6
 local function addScriptRow(entry)
@@ -841,7 +668,7 @@ local function addScriptRow(entry)
 
     local runBtn = Instance.new("TextButton", col)
     runBtn.Size = UDim2.new(0, BTN_W, 0, BTN_H)
-    runBtn.Position = UDim2.new(1, -BTN_W, 0, MARGIN) -- RIGHT_PADDING handled by parent width
+    runBtn.Position = UDim2.new(1, -BTN_W, 0, MARGIN)
     runBtn.Text = "Run"
     runBtn.BackgroundColor3 = Color3.fromRGB(70,140,70)
     runBtn.BackgroundTransparency = 0.15
@@ -924,3 +751,63 @@ applyTopbarLayout(false)
 UIS.InputBegan:Connect(function(input, gpe)
     if not gpe and input.KeyCode == Enum.KeyCode.K then gui.Enabled = not gui.Enabled end
 end)
+
+
+
+-- === Toast Control: show on script start, hide only when main menu closed ===
+task.spawn(function()
+    local Players = game:GetService("Players")
+    local lp = Players.LocalPlayer
+    local pg = lp:WaitForChild("PlayerGui")
+
+    -- Tampilkan toast saat script dijalankan
+    if _G.PRINCE_TOAST and _G.PRINCE_TOAST.show then
+        _G.PRINCE_TOAST.show({
+            title = "PRINCE GANTENG",
+            text  = "JOKI SUMIT KE TIKTOK\n@jasagendongsumitroblox"
+        })
+    end
+
+    -- Cari GUI utama Admin Prince (berdasarkan nama yang ada di script)
+    local hub = pg:FindFirstChild("ScriptHub_AdminPrince")
+    if not hub then
+        -- fallback: tunggu sebentar kalau dibuat belakangan
+        hub = pg:WaitForChild("ScriptHub_AdminPrince", 5)
+    end
+
+    if hub then
+        -- Sembunyikan toast bila GUI di-destroy atau keluar dari PlayerGui
+        hub.AncestryChanged:Connect(function(_, parent)
+            if not hub:IsDescendantOf(pg) then
+                if _G.PRINCE_TOAST and _G.PRINCE_TOAST.hide then
+                    _G.PRINCE_TOAST.hide()
+                end
+            end
+        end)
+
+        -- Juga sembunyikan saat semua Frame di dalam hub tidak ada yang Visible
+        task.spawn(function()
+            while hub.Parent and hub:IsDescendantOf(pg) do
+                local anyVisible = false
+                for _,d in ipairs(hub:GetDescendants()) do
+                    if d:IsA("Frame") and d.Visible then anyVisible = True break end
+                end
+                if not anyVisible then
+                    if _G.PRINCE_TOAST and _G.PRINCE_TOAST.hide then
+                        _G.PRINCE_TOAST.hide()
+                    end
+                    break
+                end
+                task.wait(0.3)
+            end
+        end)
+    else
+        -- Jika GUI utama tidak ditemukan, biar toast auto hilang setelah 10 detik agar tidak mengganggu
+        task.delay(10, function()
+            if _G.PRINCE_TOAST and _G.PRINCE_TOAST.hide then
+                _G.PRINCE_TOAST.hide()
+            end
+        end)
+    end
+end)
+-- === End Toast Control ===
