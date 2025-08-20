@@ -1,4 +1,3 @@
-
 -- === Reusable Toast (Bottom-Right) — "PRINCE GANTENG" ===
 do
     local Players = game:GetService("Players")
@@ -82,7 +81,6 @@ do
     sub.TextTransparency = 0.05
     sub.Text = "JOKI SUMIT KE TIKTOK\n@jasagendongsumitroblox"
 
-    -- Public API (global)
     _G.PRINCE_TOAST = _G.PRINCE_TOAST or {}
     function _G.PRINCE_TOAST.show(opts)
         opts = opts or {}
@@ -120,10 +118,6 @@ end
 
 
 --// === ADMIN PRINCE v17.9.7 ===
--- Change:
--- - Run/Stop digeser lebih jauh dari sisi kanan (RIGHT_PADDING = 54).
--- Lainnya sama seperti v17.9.6 (tema biru muda, scroll vertikal, topbar rapi, 4 item).
-
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
@@ -140,10 +134,9 @@ local function push(entry) table.insert(SCRIPTS, entry) end
 
 push({ name="Admin Full (sc infinite)", run=function()
     loadstring(HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
-end 
+end
     ,stop=function()
         local Players = game:GetService("Players")
-        -- Close Infinite Yield GUI (best-effort)
         pcall(function()
             local parents = {game:GetService("CoreGui")}
             local pg = Players.LocalPlayer:FindFirstChild("PlayerGui")
@@ -159,7 +152,6 @@ end
                 end
             end
         end)
-        -- Clear flags (non-breaking)
         pcall(function()
             _G.IY_LOADED = false
             if getgenv then
@@ -181,7 +173,6 @@ push({
     end
 })
 
-
 push({ name="KOMPLEK INDO", run=function()
     loadstring(HttpGet("https://raw.githubusercontent.com/numerouno2/eugunewuhub/refs/heads/main/eugunewustd.lua"))()
 end })
@@ -190,13 +181,10 @@ end })
 push({
     name="GUNUNG DAUN SIMPLE",
     run=function()
-        
-        -- replaced to use external daunupdate.lua
         local ok, err = pcall(function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/princesc/princesc/main/daunupdate.lua", true))()
         end)
         if not ok then warn("GUNUNG DAUN SIMPLE error: "..tostring(err)) end
-
     end,
     stop=function()
         if not GDNState.running then return end
@@ -446,12 +434,9 @@ push({ name="GUNUNG JAWA",   run=function() loadstring(HttpGet("https://pastebin
 push({
     name="TELEPORT",
     run=function()
-        -- (Teleport Misc UI code omitted here for brevity in this build)
-        loadstring(HttpGet("https://raw.githubusercontent.com/princesc/princesc/refs/heads/main/teleport_misc_embed.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/princesc/princesc/refs/heads/main/teleport.lua", true))()
     end
 })
-
-
 
 -- ===== ALL EMOTE (no Stop) =====
 push({
@@ -461,8 +446,6 @@ push({
     end
 })
 
-
-
 -- ===== ANTARTIKA (no Stop) =====
 push({
     name="ANTARTIKA",
@@ -470,8 +453,6 @@ push({
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Nearastro/Lego-hack/refs/heads/main/00AntarticaExpedition.lua"))()
     end
 })
-
-
 
 -- ===== YAGATW (no Stop) =====
 push({
@@ -481,8 +462,6 @@ push({
     end
 })
 
-
-
 -- ===== COPY AVA (no Stop) =====
 push({
     name="COPY AVA",
@@ -491,6 +470,20 @@ push({
     end
 })
 
+-- ===== BYPASS FLY (no Stop) =====
+push({
+    name="BYPASS FLY",
+    run=function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/princesc/princesc/refs/heads/main/bypass.lua", true))()
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "PRINCE GANTENG",
+                Text = "Done ✅",
+                Duration = 4
+            })
+        end)
+    end
+})
 
 -- ===== Main UI Shell =====
 pcall(function() if CoreGui:FindFirstChild("ScriptHub_AdminPrince") then CoreGui.ScriptHub_AdminPrince:Destroy() end end)
@@ -574,7 +567,6 @@ do
         end
     end)
 end
-
 
 local titleLbl = Instance.new("TextLabel", topbar)
 titleLbl.BackgroundTransparency = 1
@@ -752,15 +744,12 @@ UIS.InputBegan:Connect(function(input, gpe)
     if not gpe and input.KeyCode == Enum.KeyCode.K then gui.Enabled = not gui.Enabled end
 end)
 
-
-
 -- === Toast Control: show on script start, hide only when main menu closed ===
 task.spawn(function()
     local Players = game:GetService("Players")
     local lp = Players.LocalPlayer
     local pg = lp:WaitForChild("PlayerGui")
 
-    -- Tampilkan toast saat script dijalankan
     if _G.PRINCE_TOAST and _G.PRINCE_TOAST.show then
         _G.PRINCE_TOAST.show({
             title = "PRINCE GANTENG",
@@ -768,15 +757,12 @@ task.spawn(function()
         })
     end
 
-    -- Cari GUI utama Admin Prince (berdasarkan nama yang ada di script)
     local hub = pg:FindFirstChild("ScriptHub_AdminPrince")
     if not hub then
-        -- fallback: tunggu sebentar kalau dibuat belakangan
         hub = pg:WaitForChild("ScriptHub_AdminPrince", 5)
     end
 
     if hub then
-        -- Sembunyikan toast bila GUI di-destroy atau keluar dari PlayerGui
         hub.AncestryChanged:Connect(function(_, parent)
             if not hub:IsDescendantOf(pg) then
                 if _G.PRINCE_TOAST and _G.PRINCE_TOAST.hide then
@@ -785,12 +771,11 @@ task.spawn(function()
             end
         end)
 
-        -- Juga sembunyikan saat semua Frame di dalam hub tidak ada yang Visible
         task.spawn(function()
             while hub.Parent and hub:IsDescendantOf(pg) do
                 local anyVisible = false
                 for _,d in ipairs(hub:GetDescendants()) do
-                    if d:IsA("Frame") and d.Visible then anyVisible = True break end
+                    if d:IsA("Frame") and d.Visible then anyVisible = true break end
                 end
                 if not anyVisible then
                     if _G.PRINCE_TOAST and _G.PRINCE_TOAST.hide then
@@ -802,7 +787,6 @@ task.spawn(function()
             end
         end)
     else
-        -- Jika GUI utama tidak ditemukan, biar toast auto hilang setelah 10 detik agar tidak mengganggu
         task.delay(10, function()
             if _G.PRINCE_TOAST and _G.PRINCE_TOAST.hide then
                 _G.PRINCE_TOAST.hide()
